@@ -1,7 +1,7 @@
 
 ### *"Forge perfect color palettes, generate stunning templates"*
 
-[![Live Demo](https://img.shields.io/badge/LIVE%20DEMO-PaletteForge-d87c4a?style=for-the-badge&logo=githubpages&logoColor=white)](https://dani1157.github.io/paletteforge/)
+[![Live Demo](https://img.shields.io/badge/LIVE%20DEMO-PaletteForge-d87c4a?style=for-the-badge&logo=githubpages&logoColor=white)](https://dani1157.github.io/PaletteForge-/)
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-2b2d42?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Dani1157/paletteforge)
 [![Made with JavaScript](https://img.shields.io/badge/Made%20with-JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)]()
 [![Local AI](https://img.shields.io/badge/Powered%20by-Local%20AI-8B5CF6?style=for-the-badge&logo=ai&logoColor=white)]()
@@ -398,7 +398,7 @@ git push origin main
 Then enable GitHub Pages in repository Settings.
 
 ### Live Site
-🔗 **https://dani1157.github.io/paletteforge/**
+🔗 **https://dani1157.github.io/PaletteForge-/**
 
 ---
 
@@ -455,7 +455,7 @@ This project is open source and available under the MIT License.
 **Dani1157**
 
 [![GitHub](https://img.shields.io/badge/GitHub-Dani1157-2b2d42?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Dani1157)
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-PaletteForge-d87c4a?style=for-the-badge&logo=githubpages&logoColor=white)](https://dani1157.github.io/paletteforge/)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-PaletteForge-d87c4a?style=for-the-badge&logo=githubpages&logoColor=white)](https://dani1157.github.io/PaletteForge-/)
 [![Email](https://img.shields.io/badge/Email-Dazai48@yahoo.com-e6b17e?style=for-the-badge&logo=gmail&logoColor=white)](mailto:Dazai48@yahoo.com)
 
 ---
