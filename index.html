@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PaletteForge · Smart Color Inspiration</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Pollinations AI -->
+<script src="https://cdn.jsdelivr.net/npm/@pollinations/react@latest/dist/index.umd.js"></script>
+</head>
+<body>
+    <div id="shell">
+        <!-- TOPBAR -->
+        <header id="topbar">
+            <div class="pf-logo" onclick="nav('forge')">
+                <svg class="pf-logo-mark" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="36" height="36" rx="8" fill="#1a1400"/>
+                    <rect width="36" height="36" rx="8" fill="url(#lg1)" opacity=".9"/>
+                    <path d="M7 24h22v3a1 1 0 01-1 1H8a1 1 0 01-1-1v-3z" fill="#e8a020" opacity=".95"/>
+                    <rect x="14" y="21" width="8" height="4" rx="1" fill="#e8a020"/>
+                    <path d="M18 6c0 0-4 3-4 7 0 2.2 1 3.5 2 4-.5-1.5 0-3 .8-3.5 0 1.5 1.2 2.5 2.2 3 .3-1 0-2-.5-2.5 1 .5 1.5 2 1.5 3.5.8-.8 1-2 1-3 0-4.5-3-8.5-3-8.5z" fill="#ffd166"/>
+                    <path d="M18 10c0 0-2 2-2 4.5 0 1.5.8 2.3 1.5 2.5-.3-1 .2-2 .5-2 0 1 .8 1.8 1.5 2.2.2-.7 0-1.3-.3-1.8.7.5 1 1.5 1 2.5.5-.5.8-1.3.8-2 0-3-3-5.9-3-5.9z" fill="#ff9f20" opacity=".9"/>
+                    <defs>
+                        <linearGradient id="lg1" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+                            <stop offset="0" stop-color="#2a1800"/>
+                            <stop offset="1" stop-color="#1a0e00"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <div class="pf-logo-text">
+                    <div class="logo-wordmark">Palette<span>Forge</span></div>
+                </div>
+            </div>
+
+            <div style="width:1px;height:24px;background:var(--br);flex-shrink:0;margin:0 4px"></div>
+
+            <!-- Color pill -->
+            <div class="color-pill" onclick="document.getElementById('globalPicker').click()">
+                <div class="pill-swatch" id="globalSwatch" style="background:#e8a020">
+                    <input type="color" id="globalPicker" value="#e8a020" oninput="onGlobalColor(this.value)">
+                </div>
+                <span class="pill-hex" id="globalHex">#e8a020</span>
+            </div>
+            <button class="topbar-forge" onclick="forge()">Forge Palette →</button>
+
+            <div class="topbar-right">
+                <button class="tbtn" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 1v14M1 8h14M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" opacity=".4"/>
+                        <circle cx="8" cy="8" r="3" fill="currentColor"/>
+                    </svg>
+                </button>
+                <button class="tbtn" onclick="sharePalette()" title="Share">
+                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="12" cy="2.5" r="2" stroke="currentColor" stroke-width="1.3"/><circle cx="2.5" cy="7.5" r="2" stroke="currentColor" stroke-width="1.3"/><circle cx="12" cy="12.5" r="2" stroke="currentColor" stroke-width="1.3"/><path d="M4.2 6.7l6-3.4M4.2 8.3l6 3.4" stroke="currentColor" stroke-width="1.3"/></svg>
+                </button>
+                <button class="tbtn" onclick="saveCurrent()" title="Save palette">
+                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M7.5 1.5L9.2 5.9l4.8.4-3.6 3.2 1.1 4.7L7.5 11.7l-4 2.5 1.1-4.7L1 6.3l4.8-.4z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+                </button>
+                <div id="authArea"><button class="btn btn-s btn-sm" onclick="openOverlay('authModal')">Sign In</button></div>
+            </div>
+        </header>
+
+        <!-- SIDEBAR -->
+        <nav id="sidebar">
+            <div class="nav-group-label">Tools</div>
+            <div class="nitem active" id="nf" onclick="nav('forge')"><span class="ni">🔥</span><span>Forge</span></div>
+            <div class="nitem" id="ni" onclick="nav('images')"><span class="ni">🖼</span><span>Images</span></div>
+            <div class="nitem" id="ng" onclick="nav('gradients')"><span class="ni">◑</span><span>Gradients</span></div>
+            <div class="nitem" id="nm" onclick="nav('mixer')"><span class="ni">⬡</span><span>Mixer</span></div>
+            <div class="nitem" id="nc" onclick="nav('contrast')"><span class="ni">◐</span><span>Contrast</span></div>
+            <div class="nav-group-label">Create</div>
+            <div class="nitem" id="nt" onclick="nav('templates')"><span class="ni">📐</span><span>Templates</span><span class="nbadge">12</span></div>
+            <div class="nitem" id="nty" onclick="nav('typography')"><span class="ni">Aa</span><span>Typography</span></div>
+            <div class="nitem" id="na" onclick="nav('aistudio')"><span class="ni">✦</span><span>AI Studio</span></div>
+            <div class="nav-group-label">Library</div>
+            <div class="nitem" id="nco" onclick="nav('collection')"><span class="ni">🗂</span><span>Collection</span></div>
+            <div class="nitem" id="nex" onclick="nav('export')"><span class="ni">⬇</span><span>Export</span></div>
+            <div class="nitem" id="ne" onclick="nav('explore')"><span class="ni">🧭</span><span>Explore</span></div>
+            <div class="sidebar-mini-palettes" id="sidebarMinis"></div>
+        </nav>
+
+        <!-- MAIN -->
+        <main id="main">
+            <!-- FORGE PAGE -->
+            <div class="page active" id="page-forge">
+                <h1 class="ph1">The <em>Forge</em></h1>
+                <p class="psub">Enter a color below and instantly build a complete design system — color schemes, live previews, contrast checks, and export-ready tokens.</p>
+
+                <div class="forge-bar">
+                    <div class="forge-well" id="forgeWell" style="background:#e8a020">
+                        <input type="color" id="forgeColor" value="#e8a020" oninput="onForgeColor(this.value)">
+                    </div>
+                    <input class="forge-hex" id="forgeHex" type="text" value="#e8a020" placeholder="#rrggbb" maxlength="7" oninput="onHexType(this.value)" onkeydown="if(event.key==='Enter')forge()">
+                    <button class="btn btn-p btn-lg" onclick="forge()">Forge Palette →</button>
+                    <button class="btn btn-s" onclick="randomColor()">✦ Random</button>
+                    <button class="btn btn-s" onclick="openAISuggest()">✦ AI Suggest</button>
+                    <div style="display:flex;align-items:center;gap:8px;margin-left:auto;flex-wrap:wrap">
+                        <select class="sel" id="harmonyMode" style="width:150px" onchange="forge()">
+                            <option value="all">All Harmonies</option>
+                            <option value="complementary">Complementary</option>
+                            <option value="split">Split-Comp</option>
+                            <option value="triadic">Triadic</option>
+                            <option value="analogous">Analogous</option>
+                            <option value="mono">Monochromatic</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="forgeEmpty" style="text-align:center;padding:60px 20px">
+                    <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin:0 auto 20px;display:block;opacity:.25">
+                        <rect x="10" y="52" width="60" height="10" rx="3" fill="currentColor"/>
+                        <rect x="30" y="44" width="20" height="10" rx="2" fill="currentColor"/>
+                        <path d="M40 10c0 0-12 9-12 20 0 6 3 10 6 12-1.5-4 0-8 2.5-10 0 4 3.5 7 6.5 9 1-3 0-6-1.5-7.5 3 1.5 4.5 5.5 4.5 10 2.5-2.5 3-6 3-9C49 24.5 40 10 40 10z" fill="currentColor"/>
+                    </svg>
+                    <h2 style="font-family:var(--fd);font-size:28px;letter-spacing:.5px;margin-bottom:8px">Start Forging</h2>
+                    <p style="color:var(--tx2);max-width:380px;margin:0 auto 24px">Pick a base color above or try one of these curated starting points:</p>
+                    <div id="trendChips" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap"></div>
+                </div>
+
+                <div id="forgeOutput" style="display:none">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+                        <h2 class="ph2">Color Schemes</h2>
+                        <div style="display:flex;gap:8px">
+                            <button class="btn btn-g btn-sm" onclick="saveCurrent()">★ Save</button>
+                            <button class="btn btn-g btn-sm" onclick="nav('export')">↓ Export</button>
+                        </div>
+                    </div>
+                    <div class="scheme-grid" id="schemeGrid"></div>
+
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0">
+                        <h2 class="ph2">Live Preview</h2>
+                    </div>
+                    <div class="preview-tabs-bar" id="prevTabBar">
+                        <button class="ptab active" onclick="switchPrev('landing',this)">Landing</button>
+                        <button class="ptab" onclick="switchPrev('dashboard',this)">Dashboard</button>
+                        <button class="ptab" onclick="switchPrev('ecommerce',this)">Shop</button>
+                        <button class="ptab" onclick="switchPrev('blog',this)">Blog</button>
+                        <button class="ptab" onclick="switchPrev('saas',this)">SaaS App</button>
+                        <button class="ptab" onclick="switchPrev('portfolio',this)">Portfolio</button>
+                    </div>
+                    <div class="preview-frame">
+                        <div class="preview-chrome">
+                            <div class="pcdot" style="background:#ff5f57"></div>
+                            <div class="pcdot" style="background:#febc2e"></div>
+                            <div class="pcdot" style="background:#28c840"></div>
+                            <span class="pcurl" id="prevUrl">yoursite.com</span>
+                        </div>
+                        <div id="prevBody"></div>
+                    </div>
+
+                    <div class="g3" style="margin-bottom:28px">
+                        <div class="card"><div class="card-hdr"><span class="card-ttl">Color Info</span></div><div class="card-body" id="colorInfoCard"></div></div>
+                        <div class="card"><div class="card-hdr"><span class="card-ttl">Psychology</span></div><div class="card-body" id="psychCard"></div></div>
+                        <div class="card"><div class="card-hdr"><span class="card-ttl">Contrast</span></div><div class="card-body" id="contrastQuick"></div></div>
+                    </div>
+
+                    <h2 class="ph2" style="margin-bottom:16px">Logo Color Pairings</h2>
+                    <div class="g4" style="margin-bottom:28px" id="logoGrid"></div>
+
+                    <h2 class="ph2" style="margin-bottom:16px">Quick Export</h2>
+                    <div class="g3" id="quickExportGrid"></div>
+                </div>
+            </div>
+
+            <!-- IMAGES PAGE -->
+            <div class="page" id="page-images">
+                <h1 class="ph1">Image <em>Search</em></h1>
+                <p class="psub">Search real photos from Unsplash. Find images that match your palette's mood, or search anything you like.</p>
+                <div class="img-search-bar">
+                    <input class="inp" id="imgQ" placeholder="Try: ocean, minimal interior, autumn leaves, architecture…" style="flex:1;min-width:200px" onkeydown="if(event.key==='Enter')searchImages()">
+                    <select class="sel" id="imgColor" style="width:160px">
+                        <option value="">Any color tone</option>
+                        <option value="black_and_white">Black & White</option>
+                        <option value="black">Black</option>
+                        <option value="white">White</option>
+                        <option value="yellow">Yellow</option>
+                        <option value="orange">Orange</option>
+                        <option value="red">Red</option>
+                        <option value="purple">Purple</option>
+                        <option value="magenta">Magenta</option>
+                        <option value="green">Green</option>
+                        <option value="teal">Teal</option>
+                        <option value="blue">Blue</option>
+                    </select>
+                    <select class="sel" id="imgOri" style="width:130px">
+                        <option value="">Any orientation</option>
+                        <option value="landscape">Landscape</option>
+                        <option value="portrait">Portrait</option>
+                        <option value="squarish">Square</option>
+                    </select>
+                    <button class="btn btn-p" onclick="searchImages()">Search Images</button>
+                    <button class="btn btn-s" onclick="autoImages()">Auto from Palette</button>
+                </div>
+                <div class="img-grid" id="imgGrid">
+                    <div class="img-empty">Search for images above, or click <strong>Auto from Palette</strong> after forging a palette.</div>
+                </div>
+                <div style="text-align:center;margin-top:20px;display:none" id="imgLoadMore">
+                    <button class="btn btn-s" onclick="loadMoreImages()">Load More Images</button>
+                </div>
+            </div>
+
+            <!-- GRADIENTS PAGE -->
+            <div class="page" id="page-gradients">
+                <h1 class="ph1">Gradient <em>Builder</em></h1>
+                <p class="psub">Build CSS gradients with full control. Linear, radial, conic — save your favorites to the library.</p>
+                <div class="g2" style="margin-bottom:28px">
+                    <div class="card">
+                        <div class="card-hdr"><span class="card-ttl">Controls</span></div>
+                        <div class="card-body">
+                            <div style="margin-bottom:16px">
+                                <span class="section-label">Type</span>
+                                <div style="display:flex;gap:6px">
+                                    <button class="btn btn-p btn-sm" id="gt-linear" onclick="setGradType('linear',this)">Linear</button>
+                                    <button class="btn btn-s btn-sm" id="gt-radial" onclick="setGradType('radial',this)">Radial</button>
+                                    <button class="btn btn-s btn-sm" id="gt-conic" onclick="setGradType('conic',this)">Conic</button>
+                                </div>
+                            </div>
+                            <div style="margin-bottom:16px">
+                                <span class="section-label">Color Stops</span>
+                                <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end" id="gradStopsRow"></div>
+                                <button class="btn btn-g btn-sm" style="margin-top:10px" onclick="addGradStop()">+ Add Stop</button>
+                            </div>
+                            <div style="margin-bottom:16px" id="gradAngleWrap">
+                                <span class="section-label">Angle — <span id="gradAngleLbl">135°</span></span>
+                                <input type="range" min="0" max="360" value="135" id="gradAngleSlider" style="width:100%;accent-color:var(--ac);margin-top:4px" oninput="updateGrad()">
+                            </div>
+                            <div>
+                                <span class="section-label">Presets</span>
+                                <div style="display:flex;gap:6px;flex-wrap:wrap">
+                                    <button class="btn btn-g btn-sm" onclick="gradPreset('sunset')">Sunset</button>
+                                    <button class="btn btn-g btn-sm" onclick="gradPreset('ocean')">Ocean</button>
+                                    <button class="btn btn-g btn-sm" onclick="gradPreset('midnight')">Midnight</button>
+                                    <button class="btn btn-g btn-sm" onclick="gradPreset('forest')">Forest</button>
+                                    <button class="btn btn-g btn-sm" onclick="gradPreset('aurora')">Aurora</button>
+                                    <button class="btn btn-g btn-sm" onclick="gradPreset('candy')">Candy</button>
+                                    <button class="btn btn-g btn-sm" onclick="gradPreset('palette')">From Palette</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-hdr"><span class="card-ttl">Preview</span></div>
+                        <div class="card-body">
+                            <div class="grad-canvas" id="gradCanvas"></div>
+                            <div class="grad-css-display" id="gradCSSOut"></div>
+                            <div style="display:flex;gap:8px">
+                                <button class="btn btn-p btn-sm" onclick="copyGradCSS()">Copy CSS</button>
+                                <button class="btn btn-s btn-sm" onclick="saveGradient()">Save Gradient</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h2 class="ph2" style="margin-bottom:14px">Saved Gradients</h2>
+                <div class="g4" id="savedGradsGrid"></div>
+            </div>
+
+            <!-- MIXER PAGE -->
+            <div class="page" id="page-mixer">
+                <h1 class="ph1">Color <em>Mixer</em></h1>
+                <p class="psub">Mix two colors and get a 9-step spectrum. Click any step to copy its hex value.</p>
+                <div class="g2" style="margin-bottom:16px">
+                    <div class="card">
+                        <div class="card-hdr"><span class="card-ttl">Color A</span></div>
+                        <div class="card-body" style="display:flex;gap:14px;align-items:center">
+                            <div class="color-well" id="mwA" style="background:#e8a020;width:60px;height:60px">
+                                <input type="color" id="mcA" value="#e8a020" oninput="updateMixer()">
+                            </div>
+                            <div style="flex:1">
+                                <span class="section-label">HEX</span>
+                                <input class="inp mono" id="mhA" value="#e8a020" style="width:140px" oninput="syncMixHex('A')">
+                            </div>
+                            <button class="btn btn-g btn-sm" onclick="setMixerFromPalette('A')">From Palette</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-hdr"><span class="card-ttl">Color B</span></div>
+                        <div class="card-body" style="display:flex;gap:14px;align-items:center">
+                            <div class="color-well" id="mwB" style="background:#118ab2;width:60px;height:60px">
+                                <input type="color" id="mcB" value="#118ab2" oninput="updateMixer()">
+                            </div>
+                            <div style="flex:1">
+                                <span class="section-label">HEX</span>
+                                <input class="inp mono" id="mhB" value="#118ab2" style="width:140px" oninput="syncMixHex('B')">
+                            </div>
+                            <button class="btn btn-g btn-sm" onclick="setMixerFromPalette('B')">From Palette</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-hdr"><span class="card-ttl">9-Step Mix Result</span><button class="btn btn-g btn-sm" onclick="addMixToPalette()">Add to Collection</button></div>
+                    <div class="card-body">
+                        <div class="mix-bar" id="mixBar"></div>
+                        <div class="mix-bar" id="mixHexBar" style="margin-top:2px"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTRAST PAGE -->
+            <div class="page" id="page-contrast">
+                <h1 class="ph1">Contrast <em>Checker</em></h1>
+                <p class="psub">WCAG 2.1 compliance. Test any foreground + background pair. Get instant AA / AAA results.</p>
+                <div class="g2" style="margin-bottom:24px">
+                    <div class="card">
+                        <div class="card-hdr"><span class="card-ttl">Foreground</span></div>
+                        <div class="card-body" style="display:flex;gap:14px;align-items:center">
+                            <div class="color-well" id="cfgW" style="background:#ffffff;width:54px;height:54px"><input type="color" id="cfgC" value="#ffffff" oninput="updateContrast()"></div>
+                            <input class="inp mono" id="cfgH" value="#ffffff" style="width:130px" oninput="syncContrastH('fg')">
+                            <button class="btn btn-g btn-sm" onclick="setContrastFromPalette('fg')">From Palette</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-hdr"><span class="card-ttl">Background</span></div>
+                        <div class="card-body" style="display:flex;gap:14px;align-items:center">
+                            <div class="color-well" id="cbgW" style="background:#e8a020;width:54px;height:54px"><input type="color" id="cbgC" value="#e8a020" oninput="updateContrast()"></div>
+                            <input class="inp mono" id="cbgH" value="#e8a020" style="width:130px" oninput="syncContrastH('bg')">
+                            <button class="btn btn-g btn-sm" onclick="setContrastFromPalette('bg')">From Palette</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="g3" style="margin-bottom:28px" id="contrastResults"></div>
+                <h2 class="ph2" style="margin-bottom:14px">Palette Contrast Matrix</h2>
+                <div id="contrastMatrix" style="overflow-x:auto"></div>
+            </div>
+
+            <!-- TEMPLATES PAGE -->
+<div class="page" id="page-templates">
+    <h1 class="ph1">Website <em>Templates</em></h1>
+    <p class="psub">Professionally designed templates that automatically apply your forged palette. Click any to preview with your colors, then export the full HTML.</p>
+    
+    <div style="display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap; align-items:center;">
+        <select class="sel" id="tmplCat" style="width:180px" onchange="renderTemplates()">
+            <option value="">All Categories</option>
+            <option value="SaaS">SaaS / Tech</option>
+            <option value="Portfolio">Portfolio</option>
+            <option value="E-Commerce">E-Commerce</option>
+            <option value="Agency">Agency</option>
+            <option value="Blog">Blog</option>
+        </select>
+        
+        <button class="btn btn-p" onclick="generateAITemplate()">✦ Generate with AI</button>
+        
+        <!-- NEW BUTTON for AI Template Studio -->
+        <button class="btn btn-p" onclick="openTemplateGenerator()" style="background:var(--ac); margin-left:auto;">
+            🎨 AI Template Studio (Live Preview)
+        </button>
+    </div>
+    
+    <div class="tmpl-grid" id="tmplGrid"></div>
+</div>
+
+            <!-- TYPOGRAPHY PAGE -->
+            <div class="page" id="page-typography">
+                <h1 class="ph1">Font <em>Pairings</em></h1>
+                <p class="psub">Curated type combinations that match your palette's personality. Click to copy the font stack.</p>
+                <div id="typoList"></div>
+            </div>
+
+            <!-- AI STUDIO PAGE -->
+            <div class="page" id="page-aistudio">
+                <h1 class="ph1">AI <em>Studio</em></h1>
+                <p class="psub">Powered by Claude. Generate color names, brand stories, accessibility reports, industry analysis, and landing page copy — all tailored to your palette.</p>
+                <div class="ai-grid">
+                    <div class="ai-card">
+                        <div class="ai-card-hdr"><div class="ai-icon" style="background:rgba(var(--acr),.15);color:var(--ac)">✦</div><div><div style="font-weight:600;font-size:13px">Palette Namer</div><div style="font-size:11px;color:var(--tx2)">Poetic names for each shade</div></div></div>
+                        <div class="ai-card-body">
+                            <p style="font-size:12px;color:var(--tx2);margin-bottom:14px">AI analyzes your palette and assigns evocative, memorable names to each color — like a premium paint collection.</p>
+                            <button class="btn btn-p btn-sm" onclick="aiName()">Name My Colors</button>
+                            <div class="ai-out" id="aiNameOut" style="margin-top:14px;display:none"></div>
+                        </div>
+                    </div>
+                    <div class="ai-card">
+                        <div class="ai-card-hdr"><div class="ai-icon" style="background:rgba(139,92,246,.15);color:#8b5cf6">📖</div><div><div style="font-weight:600;font-size:13px">Brand Story</div><div style="font-size:11px;color:var(--tx2)">Generate a brand narrative</div></div></div>
+                        <div class="ai-card-body">
+                            <div style="margin-bottom:12px"><span class="section-label">Brand / Product Name</span><input class="inp" id="brandNameInp" placeholder="e.g. Nomad Coffee Co."></div>
+                            <button class="btn btn-p btn-sm" onclick="aiBrand()">Write Brand Story</button>
+                            <div class="ai-out" id="aiBrandOut" style="margin-top:14px;display:none"></div>
+                        </div>
+                    </div>
+                    <div class="ai-card">
+                        <div class="ai-card-hdr"><div class="ai-icon" style="background:rgba(40,196,120,.12);color:var(--green)">♿</div><div><div style="font-weight:600;font-size:13px">Accessibility Report</div><div style="font-size:11px;color:var(--tx2)">Full WCAG check + fixes</div></div></div>
+                        <div class="ai-card-body">
+                            <p style="font-size:12px;color:var(--tx2);margin-bottom:14px">Get a detailed WCAG 2.1 accessibility analysis with specific, actionable recommendations for your palette.</p>
+                            <button class="btn btn-p btn-sm" onclick="aiA11y()">Run Report</button>
+                            <div class="ai-out" id="aiA11yOut" style="margin-top:14px;display:none"></div>
+                        </div>
+                    </div>
+                    <div class="ai-card">
+                        <div class="ai-card-hdr"><div class="ai-icon" style="background:rgba(58,143,232,.12);color:var(--blue)">🏭</div><div><div style="font-weight:600;font-size:13px">Industry Fit</div><div style="font-size:11px;color:var(--tx2)">Where does your palette work best?</div></div></div>
+                        <div class="ai-card-body">
+                            <p style="font-size:12px;color:var(--tx2);margin-bottom:14px">Discover which industries and use-cases best match your color palette's psychology and energy.</p>
+                            <button class="btn btn-p btn-sm" onclick="aiIndustry()">Analyze Fit</button>
+                            <div class="ai-out" id="aiIndustryOut" style="margin-top:14px;display:none"></div>
+                        </div>
+                    </div>
+                    <div class="ai-card" style="grid-column:1/-1">
+                        <div class="ai-card-hdr"><div class="ai-icon" style="background:rgba(255,209,100,.12);color:#ffd164">✍</div><div><div style="font-weight:600;font-size:13px">Website Copy Generator</div><div style="font-size:11px;color:var(--tx2)">Full landing page copy for your product</div></div></div>
+                        <div class="ai-card-body">
+                            <div class="g3" style="margin-bottom:14px">
+                                <div><span class="section-label">Product Name</span><input class="inp" id="cpName" placeholder="e.g. TaskFlow"></div>
+                                <div><span class="section-label">Product Type</span><input class="inp" id="cpType" placeholder="e.g. project management app"></div>
+                                <div><span class="section-label">Target Audience</span><input class="inp" id="cpAudience" placeholder="e.g. remote design teams"></div>
+                            </div>
+                            <button class="btn btn-p btn-sm" onclick="aiCopy()">Generate Landing Page Copy</button>
+                            <div class="ai-out" id="aiCopyOut" style="margin-top:14px;display:none"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COLLECTION PAGE -->
+            <div class="page" id="page-collection">
+                <h1 class="ph1">My <em>Collection</em></h1>
+                <p class="psub">Your saved palettes and gradients. Everything persists in your browser — sign in to sync across devices.</p>
+                <div class="tabs">
+                    <button class="tab active" onclick="collTab('palettes',this)">Palettes</button>
+                    <button class="tab" onclick="collTab('gradients',this)">Gradients</button>
+                </div>
+                <div id="collPalettes" class="coll-grid"></div>
+                <div id="collGradients" class="g4" style="display:none"></div>
+                <div id="collEmpty" style="text-align:center;padding:60px;color:var(--tx2);display:none">
+                    <div style="font-size:48px;margin-bottom:12px">🗂</div>
+                    <div style="font-family:var(--fd);font-size:22px;margin-bottom:6px">Nothing here yet</div>
+                    <div style="font-size:13px">Forge a palette and click ★ Save to start your collection</div>
+                </div>
+            </div>
+
+            <!-- EXPORT PAGE -->
+            <div class="page" id="page-export">
+                <h1 class="ph1">Export <em>System</em></h1>
+                <p class="psub">Export your design system in any format — CSS, SCSS, Tailwind, JSON tokens, Figma, Android XML.</p>
+                <div class="ef-grid" id="efGrid"></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+                    <h2 class="ph2">Output</h2>
+                    <button class="btn btn-p btn-sm" onclick="copyExport()">Copy All</button>
+                </div>
+                <div class="export-code" id="exportOut">Select a format above and forge a palette to generate export code.</div>
+            </div>
+
+            <!-- EXPLORE PAGE -->
+            <div class="page" id="page-explore">
+                <h1 class="ph1">Explore <em>Palettes</em></h1>
+                <p class="psub">Hand-crafted and community-trending palettes. Click any to load into the Forge.</p>
+                <div class="tabs">
+                    <button class="tab active" onclick="exploreTab('trending',this)">Trending</button>
+                    <button class="tab" onclick="exploreTab('curated',this)">Curated</button>
+                    <button class="tab" onclick="exploreTab('seasonal',this)">Seasonal</button>
+                    <button class="tab" onclick="exploreTab('industry',this)">By Industry</button>
+                </div>
+                <div class="explore-grid" id="exploreGrid"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODALS -->
+    <div class="overlay" id="authModal">
+        <div class="modal" style="max-width:420px">
+            <div class="modal-hdr"><div class="modal-ttl">Welcome to PaletteForge</div><button class="modal-x" onclick="closeOverlay('authModal')">✕</button></div>
+            <div class="modal-body">
+                <div style="display:flex;border:1px solid var(--br);border-radius:var(--r);overflow:hidden;margin-bottom:20px">
+                    <button id="atab-login" style="flex:1;padding:10px;border:none;background:var(--ac);color:#1a0e00;font-weight:700;font-size:13px;cursor:pointer" onclick="switchAuth('login')">Sign In</button>
+                    <button id="atab-reg" style="flex:1;padding:10px;border:none;background:var(--s2);color:var(--tx2);font-size:13px;cursor:pointer" onclick="switchAuth('reg')">Register</button>
+                </div>
+                <div id="aform-login">
+                    <div style="margin-bottom:12px"><span class="section-label">Email</span><input class="inp" id="loginEmail" type="email" placeholder="you@email.com"></div>
+                    <div style="margin-bottom:16px"><span class="section-label">Password</span><input class="inp" id="loginPass" type="password" placeholder="••••••••"></div>
+                    <button class="btn btn-p" style="width:100%" onclick="doLogin()">Sign In</button>
+                    <p style="text-align:center;margin-top:12px;font-size:12px;color:var(--tx2)">Demo: any email + any password</p>
+                </div>
+                <div id="aform-reg" style="display:none">
+                    <div style="margin-bottom:12px"><span class="section-label">Display Name</span><input class="inp" id="regName" placeholder="Your name"></div>
+                    <div style="margin-bottom:12px"><span class="section-label">Email</span><input class="inp" id="regEmail" type="email" placeholder="you@email.com"></div>
+                    <div style="margin-bottom:16px"><span class="section-label">Password</span><input class="inp" id="regPass" type="password" placeholder="••••••••"></div>
+                    <button class="btn btn-p" style="width:100%" onclick="doReg()">Create Account</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="tmplModal">
+        <div class="modal" style="max-width:900px">
+            <div class="modal-hdr"><div class="modal-ttl" id="tmplModalTitle">Template Preview</div><button class="modal-x" onclick="closeOverlay('tmplModal')">✕</button></div>
+            <div class="modal-body" id="tmplModalBody"></div>
+            <div class="modal-foot">
+                <button class="btn btn-g" onclick="closeOverlay('tmplModal')">Close</button>
+                <button class="btn btn-p" onclick="exportTemplate()">Export HTML ↓</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="imgModal">
+        <div class="modal" style="max-width:700px">
+            <div class="modal-hdr"><div class="modal-ttl">Photo</div><button class="modal-x" onclick="closeOverlay('imgModal')">✕</button></div>
+            <div class="modal-body" id="imgModalBody"></div>
+        </div>
+    </div>
+
+    <div id="toasts"></div>
+
+    <!-- JavaScript Files -->
+    <script src="js/color.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/forge.js"></script>
+    <script src="js/images.js"></script>
+    <script src="js/gradients.js"></script>
+    <script src="js/mixer.js"></script>
+    <script src="js/contrast.js"></script>
+    <script src="js/templates.js"></script>
+    <script src="js/typography.js"></script>
+    <script src="js/aistudio.js"></script>
+    <script src="js/collection.js"></script>
+    <script src="js/export.js"></script>
+    <script src="js/explore.js"></script>
+    <script src="js/template-generator.js"></script>
+</body>
+</html>
